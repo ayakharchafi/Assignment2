@@ -16,11 +16,10 @@ spl_autoload_register(function ($class) {
 
 //echo "URL = ".$_GET['url'];
 
-echo "GET = ".var_dump($_GET);
+//echo "GET = ".var_dump($_GET);
 
-
-$resourceName = array_keys($_GET)[0];
-//echo $resource;
+$resourceName = $_GET['url'];
+// echo $resourceName;
 
 // We need to construct the controller name from the resource name
 
@@ -44,7 +43,7 @@ if(class_exists($controllerClass)){
 
     $employeeController = new $controllerClass();
 
-    $data = $employeeController->read();
+    $data = $employeeController->create();
 
     // If we used return in the view then we can echo the data here
     //echo $data;

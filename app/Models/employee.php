@@ -10,7 +10,7 @@ use database\DBConnectionManager;
 // dirname(__DIR__) ->c:\xampp\htdocs\app\
 require(dirname(__DIR__)."/core/db/dbconnectionmanager.php");
 
-class Employee{
+class Employee {
     private $employeeID;
     private $firstName;
     private $lastName;
@@ -20,8 +20,11 @@ class Employee{
     private $dbConnection;
 
     // Constructor
-    public function __construct() {
-
+    public function __construct($firstName = null, $lastName = null, $title = null, $departmentID = null) {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->title = $title;
+        $this->departmentID = $departmentID;
         $this->dbConnection = (new DBConnectionManager())->getConnection();
     }
 
@@ -90,13 +93,19 @@ class Employee{
         return $stmt->fetchAll(\PDO::FETCH_CLASS, Employee::class);
     }
     
-}
+    public function create() {
+        if (empty($this->firstName) && empty($this->departmentID) && empty($this->title)) {
+            return false;
+        }
 
-/*TEST   
-$employee = new Employee();
-foreach ($employee->read() as &$value) {
-    echo "<pre>";
-    print_r($value);
-    echo "</pre>";
+        $query = "INSERT INTO employees (firstName, lastName, title, departmentID) VALUES (:firstName, :lastName, :title, :departmentID)";
+        $stmt = $this->dbConnection->prepare($query);
+
+        $stmt->bindParam(':firstName', $this->firstName);
+        $stmt->bindParam(':lastName', $this->lastName);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':departmentID', $this->departmentID);
+
+        return $stmt->execute();
+    }
 }
- */
