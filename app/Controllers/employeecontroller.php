@@ -50,6 +50,9 @@ class EmployeeController {
                 exit;
             } else {
                 $usermessage = "Please input all required fields.";
+                if(!ctype_alpha($data['title'])){
+                    $usermessage = "Please input a title with only letters";
+                }
             }
         }
 

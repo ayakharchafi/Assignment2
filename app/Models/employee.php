@@ -23,7 +23,11 @@ class Employee {
     public function __construct($firstName = null, $lastName = null, $title = null, $departmentID = null) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->title = $title;
+        if(isset($title)){
+            if(!ctype_alpha($title)){
+            $this->title = 'invalid';
+            }
+        }
         $this->departmentID = $departmentID;
         $this->dbConnection = (new DBConnectionManager())->getConnection();
     }
@@ -52,7 +56,11 @@ class Employee {
     }
 
     public function setTitle($title) {
-        $this->title = $title;
+        if(isset($title)){
+            if(!ctype_alpha($title)){
+            $this->title = "invalid";
+            }
+        }
     }
 
     // Set the department for this employee
@@ -95,6 +103,10 @@ class Employee {
     
     public function create() {
         if (empty($this->firstName) && empty($this->departmentID) && empty($this->title)) {
+            return false;
+        }
+        if(!ctype_alpha($this->title)){
+            
             return false;
         }
 
