@@ -68,8 +68,8 @@ class Project {
             return false;
         }
         
-        // Validate budget is numeric and positive
-        if (!is_numeric($this->budget) || $this->budget <= 0) {
+        //rule3 : Ensure all project records have a budget amount greater than zero.
+        if(!$this->isBudgetValid($this->budget)){
             return false;
         }
 
@@ -80,5 +80,9 @@ class Project {
         $stmt->bindParam(':budget', $this->budget);
 
         return $stmt->execute();
+    }
+    //function to help validate budget for rule 3
+    function isBudgetValid($budget){
+        return is_numeric($budget)&& $budget > 0;    
     }
 }
